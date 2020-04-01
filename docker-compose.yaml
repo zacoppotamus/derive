@@ -1,0 +1,31 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:12.2-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    expose:
+      - "5432"
+    networks:
+      - derive
+    restart: always
+  eda:
+    build:
+      context: ./eda
+      dockerfile: Dockerfile
+    container_name: eda
+    # entrypoint: [/bin/sh]
+    stdin_open: true
+    tty: true
+    # command: [jupyter, notebook]
+    networks:
+      - derive
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./eda:/eda
+networks:
+  derive:

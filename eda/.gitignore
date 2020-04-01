@@ -1,0 +1,20 @@
+# Python
+__pycache__
+*.pyc
+
+# Docker
+.devcontainer
+
+# Generated serialized files
+derive/neighborhoods/urban
+derive/neighborhoods/*.pkl
+
+# Downloaded metadata
+derive/metadata/0_1
+derive/metadata/1_2
+derive/metadata/2_3
+derive/metadata/3_4
+
+# Word embeddings
+derive/embeddings/*.txt
+derive/embeddings/*.word2vec
