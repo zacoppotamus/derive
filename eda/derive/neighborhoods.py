@@ -107,6 +107,15 @@ def main(args):
         default="{dir}/neighborhoods/".format(dir=current_dir),
     )
 
+    parser.add_argument(
+        "-n",
+        "--neighborhood-name",
+        dest="NEIGHBORHOOD_NAME",
+        default="urban",
+        type=str,
+        help="The folder name for the outputted sonic neighborhood",
+    )
+
     # Filtering options
     parser.add_argument(
         "-f",
@@ -174,14 +183,14 @@ def main(args):
     soundscape = SonicCity(
         metadata=filtered_metadata,
         model=model,
-        name="urban",
+        name=a.NEIGHBORHOOD_NAME,
         reduced_dims=a.TSNE_DIMENSIONS,
-        output_folder=os.path.join(a.OUTPUT_FOLDER, "urban"),
+        output_folder=os.path.join(a.OUTPUT_FOLDER, a.NEIGHBORHOOD_NAME),
     )
 
     soundscape.label_neighborhoods(n_clusters=a.NUM_CLUSTERS)
-    soundscape.neighborhoods_to_json(os.path.join(a.OUTPUT_FOLDER, "urban"))
-    soundscape.pickle(os.path.join(a.OUTPUT_FOLDER, "urban"))
+    soundscape.neighborhoods_to_json(os.path.join(a.OUTPUT_FOLDER, a.NEIGHBORHOOD_NAME))
+    soundscape.pickle(os.path.join(a.OUTPUT_FOLDER, a.NEIGHBORHOOD_NAME))
 
     # soundscape.samples_to_files(a.OUTPUT_FOLDER)
 

@@ -1,23 +1,36 @@
-word_vectors:
-	python derive/word_vectors.py
+AUDIO_FOLDER=derive/audio
+EMBEDDINGS_FOLDER=derive/embeddings
+METADATA_FOLDER=derive/metadata
+
+neighborhoods: word_vectors
+	python derive/neighborhoods.py
+
+word_vectors: $(EMBEDDINGS_FOLDER)/*.word2vec
+	python derive/serialize_word_vectors.py
 
 embeddings:
-	mkdir -p derive/embeddings
-	curl -X http://nlp.stanford.edu/data/glove.6B.zip derive/embeddings
-	unzip derive/embeddings/glove.6B.zip
-	find derive/embeddings/* ! -name 'glove.6B.100d.txt' -type f -exec rm -f {} +
+	mkdir -p $(EMBEDDINGS_FOLDER)
+	wget -O http://nlp.stanford.edu/data/glove.6B.zip $(EMBEDDINGS_FOLDER)
+	unzip $(EMBEDDINGS_FOLDER)/glove.6B.zip -d $(EMBEDDINGS_FOLDER)
+	find $(EMBEDDINGS_FOLDER)/* ! -name 'glove.6B.100d.txt' -type f -exec rm -f {} +
 
 metadata:
 	mkdir -p derive/metadata
-	curl -X https://archive.org/download/freesound4s/0_1.json.zip derive/metadata/
-	curl -X https://archive.org/download/freesound4s/1_2.json.zip derive/metadata/
-	curl -X https://archive.org/download/freesound4s/2_3.json.zip derive/metadata/
-	curl -X https://archive.org/download/freesound4s/3_4.json.zip derive/metadata/
-	unzip derive/metadata/*.zip
-	rm derive/metadata/*.zip
+	wget -P $(METADATA_FOLDER) https://archive.org/download/freesound4s/0_1.json.zip \
+	https://archive.org/download/freesound4s/1_2.json.zip \
+	https://archive.org/download/freesound4s/2_3.json.zip \
+	https://archive.org/download/freesound4s/3_4.json.zip
+	unzip '$(METADATA_FOLDER)/*.zip' -d $(METADATA_FOLDER)
+	rm $(METADATA_FOLDER)/*.zip
 
 samples:
-	mkdir -p derive/audio
+	mkdir -p $(AUDIO_FOLDER)
+	wget -P $(AUDIO_FOLDER) https://archive.org/download/freesound4s/0_1.mp3.zip \
+	https://archive.org/download/freesound4s/1_2.mp3.zip \
+	https://archive.org/download/freesound4s/2_3.mp3.zip \
+	https://archive.org/download/freesound4s/3_4.mp3.zip
+	unzip '$(AUDIO_FOLDER)/*.zip' -d $(AUDIO_FOLDER)
+	rm $(AUDIO_FOLDER)/*.zip
 
 hello:
-	echo Hi
+	find $(EMBEDDINGS_FOLDER)/* ! -name 'glove.6B.100d.txt'
