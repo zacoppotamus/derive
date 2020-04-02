@@ -2,15 +2,15 @@ AUDIO_FOLDER=derive/audio
 EMBEDDINGS_FOLDER=derive/embeddings
 METADATA_FOLDER=derive/metadata
 
-neighborhoods: word_vectors
+neighborhoods: word_vectors metadata
 	python derive/neighborhoods.py
 
-word_vectors: $(EMBEDDINGS_FOLDER)/*.word2vec
+word_vectors: embeddings
 	python derive/serialize_word_vectors.py
 
 embeddings:
 	mkdir -p $(EMBEDDINGS_FOLDER)
-	wget -O http://nlp.stanford.edu/data/glove.6B.zip $(EMBEDDINGS_FOLDER)
+	wget -P $(EMBEDDINGS_FOLDER) http://nlp.stanford.edu/data/glove.6B.zip
 	unzip $(EMBEDDINGS_FOLDER)/glove.6B.zip -d $(EMBEDDINGS_FOLDER)
 	find $(EMBEDDINGS_FOLDER)/* ! -name 'glove.6B.100d.txt' -type f -exec rm -f {} +
 
