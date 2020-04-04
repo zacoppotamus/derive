@@ -89,6 +89,9 @@ class SonicCity:
         return
 
     def label_neighborhoods(self, n_clusters=8):
+        """Reduces the 100D vectors and assigns a label to the 
+        sample.
+        """
         # essentially k-means
         X = self.reduced if self.reduced else self.tsne()
 
