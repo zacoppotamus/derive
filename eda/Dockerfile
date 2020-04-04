@@ -13,7 +13,8 @@ WORKDIR /install
 COPY requirements.txt /requirements.txt
 
 # Fetch app specific dependencies
-RUN apt-get install unzip \
+RUN apt-get update \
+  && apt-get install unzip \
   && pip install --upgrade pip \
   && pip install --install-option="--prefix=/install" -r /requirements.txt
 
@@ -28,5 +29,5 @@ WORKDIR /eda
 COPY --from=builder /install /usr/local
 
 # CMD ["python"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8888", "--workers=4", "--timeout=90", "wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8888", "--workers=4", "--timeout=90","--chdir /eda/derive" "wsgi:app"]
 # ENTRYPOINT [ "./entrypoint" ]

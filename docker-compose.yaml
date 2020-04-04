@@ -1,22 +1,24 @@
 version: "3"
 services:
-  postgres:
-    image: postgres:12.2-alpine
-    container_name: postgres
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_DB: ${DB_NAME}
-    expose:
-      - "5432"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
     networks:
       - derive
-    restart: always
-  eda:
+    ports:
+      - "1235:1234"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - "./frontend:/app"
+      - "/app/node_modules"
+  api:
     build:
       context: ./eda
       dockerfile: Dockerfile
-    container_name: eda
+    container_name: api
     # entrypoint: [/bin/sh]
     stdin_open: true
     tty: true

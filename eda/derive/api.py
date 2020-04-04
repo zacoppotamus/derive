@@ -1,6 +1,8 @@
+# pylint: disable=no-value-for-parameter
 from flask import Flask, jsonify
 from flask_restful import reqparse, Api, Resource
 from flask_restful.utils import cors
+from utils.encoder import NumpyEncoder
 
 
 import faiss
@@ -29,21 +31,13 @@ soundscape = pickle.load(open(PKL_FILE, "rb"))
 vectors = np.array([s["coordinates"] for s in soundscape.metadata]).astype("float32")
 ids = np.array([s["id"] for s in soundscape.metadata]).astype("int")
 
+# pylint: disable=unsubscriptable-object
 index = faiss.IndexFlatL2(vectors.shape[1])
 
 index = faiss.IndexIDMap2(index)
 index.add_with_ids(vectors, ids)
 
 logging.info("Server ready")
-
-
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        if isinstance(obj, np.int32):
-            return int(obj)
-        return json.JSONEncoder.default(self, obj)
 
 
 class Similarity(Resource):
