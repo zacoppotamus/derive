@@ -29,5 +29,5 @@ WORKDIR /eda
 COPY --from=builder /install /usr/local
 
 # CMD ["python"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8888", "--workers=4", "--timeout=90","--chdir /eda/derive" "wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8888", "--debug", "--workers=4", "--timeout=90","--chdir /eda/derive" "wsgi:app"]
 # ENTRYPOINT [ "./entrypoint" ]

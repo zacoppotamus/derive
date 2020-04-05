@@ -23,6 +23,8 @@ metadata:
 	unzip '$(METADATA_FOLDER)/*.zip' -d $(METADATA_FOLDER)
 	rm $(METADATA_FOLDER)/*.zip
 
+# Need to rename samples because when they get unzipped,
+# they're named mp3
 samples:
 	mkdir -p $(AUDIO_FOLDER)
 	wget -P $(AUDIO_FOLDER) https://archive.org/download/freesound4s/0_1.mp3.zip \

@@ -21,3 +21,4 @@ derive/embeddings/*.word2vec
 
 # Audio files
 derive/audio/*.zip
+derive/audio/**/*.mp3

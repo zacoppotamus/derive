@@ -22,7 +22,8 @@ services:
     # entrypoint: [/bin/sh]
     stdin_open: true
     tty: true
-    # command: [jupyter, notebook]
+    # command: gunicorn --bind 0.0.0.0:8888 --workers=4 --chdir /eda/derive wsgi:app
+    command: python /eda/derive/api.py
     networks:
       - derive
     ports:
