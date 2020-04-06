@@ -1,3 +1,9 @@
 body {
   background-color: black;
+  margin: 0;
+}
+
+#stage {
+  width: 100vw;
+  height: 100vh;
 }

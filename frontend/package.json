@@ -12,7 +12,12 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "gl-matrix": "^3.3.0",
+    "regl": "^1.4.2",
+    "simplex-noise": "^2.4.0"
+  },
   "devDependencies": {
     "@types/node": "^13.9.0",
     "babel-core": "^6.26.3",
