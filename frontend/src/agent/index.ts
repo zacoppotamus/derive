@@ -12,9 +12,9 @@ export default class Agent {
   *roam() {
     while (true) {
       vec3.add(this.pos, this.pos, [
-        Math.random() - 0.5,
-        Math.random() - 0.5,
-        Math.random() - 0.5,
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01,
       ]);
       yield this.pos;
     }
