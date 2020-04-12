@@ -10,7 +10,19 @@ export default class Agent {
   }
 
   *journey(startPoint: vec3, endPoint: vec3) {
-    while (true) {}
+    this.pos = startPoint;
+    let distance = vec3.squaredDistance(this.pos, endPoint);
+
+    while (distance > 0.001) {
+      let direction: vec3 = [0, 0, 0];
+      vec3.sub(direction, endPoint, startPoint);
+      vec3.normalize(direction, direction);
+      vec3.scale(direction, direction, 0.1);
+      vec3.add(this.pos, direction, this.pos);
+
+      distance = vec3.squaredDistance(this.pos, endPoint);
+      yield this.pos;
+    }
   }
 
   *roam() {

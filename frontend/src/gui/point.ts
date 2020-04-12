@@ -7,7 +7,10 @@ export default class Point {
   public regl: REGL.Regl;
   public draw: any;
   constructor(canvas: HTMLCanvasElement) {
-    this.regl = REGL({ canvas });
+    this.regl = REGL({
+      canvas,
+      pixelRatio: Math.min(window.devicePixelRatio, 1.5),
+    });
     this.draw = this.regl({
       frag: pointFS,
       vert: pointVS,

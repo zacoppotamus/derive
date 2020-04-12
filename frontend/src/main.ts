@@ -1,3 +1,5 @@
+import { vec3 } from "gl-matrix";
+
 import API from "./api";
 import Agent from "./agent";
 import Point from "./gui/point";
@@ -9,9 +11,14 @@ const api = new API();
 const agent = new Agent();
 const roamA = agent.roam();
 
-let coordinates: ILatentSpace;
+const LATENT_SPACE_SCALE = 2;
+
+let latentSpace: ILatentSpace;
 let canvas: HTMLCanvasElement | null;
 let gui: any;
+
+let journey;
+let agentPos: vec3 = [0, 0, 0];
 
 function loadData() {
   canvas = document.querySelector("canvas");
@@ -20,28 +27,40 @@ function loadData() {
   canvas.width = window.innerWidth;
   gui = new Point(canvas);
 
-  api.coordinates().then((d) => {
-    coordinates = d;
-    console.log(coordinates);
+  api.coordinates().then((data) => {
+    latentSpace = data;
+    latentSpace.forEach((p) => ({
+      ...p,
+      coordinates: vec3.scale(p.coordinates, p.coordinates, LATENT_SPACE_SCALE),
+    }));
+
+    journey = agent.journey(
+      latentSpace[Math.floor(Math.random() * latentSpace.length)].coordinates,
+      latentSpace[Math.floor(Math.random() * latentSpace.length)].coordinates
+    );
+
     draw();
   });
 }
 
 function draw() {
   gui.regl.frame(() => {
-    gui.regl.clear({ color: [0, 0, 0, 0.1] });
+    const journeyNext = journey.next();
+    !journeyNext.done && (agentPos = journeyNext.value);
+
+    gui.regl.clear({ color: [0, 0, 0, 0] });
+    gui.draw(
+      latentSpace.map((c) => ({
+        color: [1, 0.2, 0.3, 0.6],
+        size: 1,
+        position: c.coordinates,
+      }))
+    );
     gui.draw({
       color: [1, 1, 1, 1],
       size: 10,
-      position: roamA.next().value,
+      position: agentPos,
     });
-    gui.draw(
-      coordinates.map((c) => ({
-        color: [1, 0.2, 0.3, 0.6],
-        size: 1,
-        position: c.coordinates.map((n) => n * 2),
-      }))
-    );
   });
 }
 
