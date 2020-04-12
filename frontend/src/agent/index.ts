@@ -9,6 +9,10 @@ export default class Agent {
     this.pos = [3, 1, 3];
   }
 
+  *journey(startPoint: vec3, endPoint: vec3) {
+    while (true) {}
+  }
+
   *roam() {
     while (true) {
       vec3.add(this.pos, this.pos, [

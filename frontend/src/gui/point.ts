@@ -1,5 +1,7 @@
 import REGL from "regl";
-import { mat4 } from "gl-matrix";
+import { viewMatrix, projectionMatrix } from "./camera";
+import pointFS from "./shaders/point.fs.glsl";
+import pointVS from "./shaders/point.vs.glsl";
 
 export default class Point {
   public regl: REGL.Regl;
@@ -7,52 +9,29 @@ export default class Point {
   constructor(canvas: HTMLCanvasElement) {
     this.regl = REGL({ canvas });
     this.draw = this.regl({
-      frag: `
-        precision mediump float;
-        void main() {
-          if (length(gl_PointCoord.xy - 0.5) > 0.5) {
-            discard;
-          }
-          gl_FragColor = vec4(1.);
-        }`,
-      vert: `
-        uniform vec3 position;
-        uniform mat4 view, projection;
-
-        // vec3 position = vec3(1.);
-
-        void main() {
-          gl_PointSize = 5.;
-          gl_Position = projection * view * vec4(position, 1.);
-        }
-      `,
-      attributes: {
-        // position: [0, 0, 0],
-      },
+      frag: pointFS,
+      vert: pointVS,
+      attributes: {},
       uniforms: {
         time: ({ tick }) => tick * 0.001,
+        color: this.regl.prop("color"),
         position: this.regl.prop("position"),
-        view: ({ tick }) => {
-          const t = 0.01 * tick;
-          return mat4.lookAt(
-            ([] as unknown) as mat4,
-            [10 * Math.cos(t), 0, 30 + 10 * Math.sin(t)],
-            [0, 0, 0],
-            [0, 1, 0]
-          );
-        },
-        projection: ({ viewportWidth, viewportHeight }) =>
-          mat4.perspective(
-            ([] as unknown) as mat4,
-            Math.PI / 4,
-            viewportWidth / viewportHeight,
-            0.01,
-            1000
-          ),
+        size: this.regl.prop("size"),
+        view: viewMatrix,
+        projection: projectionMatrix,
       },
-      // depth: {
-      //   enable: true,
-      // },
+      blend: {
+        enable: true,
+        func: {
+          srcRGB: "src alpha",
+          srcAlpha: "src alpha",
+          dstRGB: "one minus src alpha",
+          dstAlpha: "one minus src alpha",
+        },
+      },
+      depth: {
+        enable: false,
+      },
       count: 1,
       primitive: "points",
     });
