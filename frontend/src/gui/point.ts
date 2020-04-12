@@ -5,13 +5,17 @@ import pointVS from "./shaders/point.vs.glsl";
 
 export default class Point {
   public regl: REGL.Regl;
-  public draw: any;
+  public points: any;
+  public lines: any;
   constructor(canvas: HTMLCanvasElement) {
     this.regl = REGL({
       canvas,
+      attributes: {
+        antialias: true,
+      },
       pixelRatio: Math.min(window.devicePixelRatio, 1.5),
     });
-    this.draw = this.regl({
+    this.points = this.regl({
       frag: pointFS,
       vert: pointVS,
       attributes: {},

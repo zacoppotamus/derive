@@ -23,8 +23,8 @@ let agentPos: vec3 = [0, 0, 0];
 function loadData() {
   canvas = document.querySelector("canvas");
   if (!canvas) return;
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight * 2;
+  canvas.width = window.innerWidth * 2;
   gui = new Point(canvas);
 
   api.coordinates().then((data) => {
@@ -49,16 +49,16 @@ function draw() {
     !journeyNext.done && (agentPos = journeyNext.value);
 
     gui.regl.clear({ color: [0, 0, 0, 0] });
-    gui.draw(
+    gui.points(
       latentSpace.map((c) => ({
         color: [1, 0.2, 0.3, 0.6],
         size: 1,
         position: c.coordinates,
       }))
     );
-    gui.draw({
+    gui.points({
       color: [1, 1, 1, 1],
-      size: 10,
+      size: 12,
       position: agentPos,
     });
   });
