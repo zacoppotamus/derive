@@ -13,7 +13,9 @@
     "type-check:watch": "npm run type-check -- --watch"
   },
   "dependencies": {
+    "@types/bezier-js": "0.0.8",
     "@types/es6-promise": "^3.3.0",
+    "bezier-js": "^2.6.1",
     "gl-matrix": "^3.3.0",
     "glsl-noise": "0.0.0",
     "regl": "^1.4.2",

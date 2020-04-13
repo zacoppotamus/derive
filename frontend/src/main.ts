@@ -52,7 +52,7 @@ function draw() {
     gui.points(
       latentSpace.map((c) => ({
         color: [1, 0.2, 0.3, 0.6],
-        size: 1,
+        size: 3,
         position: c.coordinates,
       }))
     );
@@ -61,6 +61,7 @@ function draw() {
       size: 12,
       position: agentPos,
     });
+    gui.lines();
   });
 }
 
