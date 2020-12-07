@@ -1,10 +1,10 @@
 import REGL from "regl";
-import { mat4 } from "gl-matrix";
+import { mat4, vec3 } from "gl-matrix";
 
 import { viewMatrix, projectionMatrix } from "./camera";
 import {
   roundCapJoinGeometry,
-  interleavedStripRoundCapJoin3DDEMO,
+  interleavedStripRoundCapJoin3DDEMO
 } from "./commands";
 import { generateBezier, generateLine } from "./bezier";
 import pointFS from "./shaders/point.fs.glsl";
@@ -24,9 +24,9 @@ export default class Point {
       canvas,
       extensions: ["ANGLE_instanced_arrays"],
       attributes: {
-        antialias: true,
+        antialias: true
       },
-      pixelRatio: Math.min(window.devicePixelRatio, 1.5),
+      pixelRatio: Math.min(window.devicePixelRatio, 1.5)
     });
 
     this.points = this.regl({
@@ -39,7 +39,7 @@ export default class Point {
         position: this.regl.prop("position"),
         size: this.regl.prop("size"),
         view: viewMatrix,
-        projection: projectionMatrix,
+        projection: projectionMatrix
       },
       blend: {
         enable: true,
@@ -47,43 +47,36 @@ export default class Point {
           srcRGB: "src alpha",
           srcAlpha: "src alpha",
           dstRGB: "one minus src alpha",
-          dstAlpha: "one minus src alpha",
-        },
+          dstAlpha: "one minus src alpha"
+        }
       },
       depth: {
-        enable: false,
+        enable: false
       },
       count: 1,
-      primitive: "points",
+      primitive: "points"
     });
 
     this.lineCMD = interleavedStripRoundCapJoin3DDEMO(this.regl, 16);
   }
 
-  lines() {
+  lines(pos: vec3) {
     // console.log(generateBezier([-10, 20, 0], [10, 10, 10]));
     const viewport = {
       x: 0,
       y: 0,
       width: this.canvas.width,
-      height: this.canvas.height,
+      height: this.canvas.height
     };
     const resolution = 100;
     const model = mat4.create();
-
     this.lineCMD({
-      // points: generateLine([-10, 20, 0], [], [10, 10, 10], resolution),
-      points: generateBezier([-10, 70, 0], [10, 10, 0], resolution),
+      points: generateBezier(pos, [0, 0, 0], resolution),
       width: 4,
       model,
-      // view: viewMatrix({ tick: 0 }),
-      // projection: projectionMatrix({
-      //   viewportWidth: this.canvas.width,
-      //   viewportHeight: this.canvas.height,
-      // }),
       resolution: [this.canvas.width, this.canvas.height],
       segments: resolution - 1,
-      viewport,
+      viewport
     });
   }
 }

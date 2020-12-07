@@ -4,19 +4,14 @@ const API_COORDINATES = `${API_URL}/coordinates`;
 const API_SIMILARITY_ID = `${API_URL}/similar/id`;
 const API_SIMILARITY_VECTOR = `${API_URL}/similar/vector`;
 
-const toJSON = (res: any) => res.json();
+const toJSON = (res) => res.json();
 
 export default class API {
-  constructor() {}
-
-  async coordinates(): Promise<ILatentSpace | IObservation[]> {
+  async coordinates() {
     return fetch(API_COORDINATES).then(toJSON);
   }
 
-  async similar(x: number): Promise<ILatentSpace>;
-  async similar(x: IVec3): Promise<ILatentSpace>;
-
-  async similar(a: number | IVec3): Promise<ILatentSpace | undefined> {
+  async similar(a) {
     if (typeof a === "number") {
       return fetch(`${API_SIMILARITY_ID}/${a}`).then(toJSON);
     } else if (typeof a === "object") {
@@ -29,7 +24,7 @@ export default class API {
     return;
   }
 
-  sample(id: number): HTMLAudioElement {
+  sample(id) {
     return new Audio(`${API_AUDIO_SAMPLE}/${id}`);
   }
 }

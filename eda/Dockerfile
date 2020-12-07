@@ -16,7 +16,7 @@ COPY requirements.txt /requirements.txt
 RUN apt-get update \
   && apt-get install unzip \
   && pip install --upgrade pip \
-  && pip install --install-option="--prefix=/install" -r /requirements.txt
+  && pip install --prefix="/install" -r /requirements.txt
 
 FROM base
 

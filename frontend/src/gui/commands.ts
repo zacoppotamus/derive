@@ -12,7 +12,7 @@ export function roundCapJoinGeometry(regl: REGL.Regl, resolution: number) {
     [0, 0.5, 1],
     [0, -0.5, 0],
     [0, 0.5, 1],
-    [0, 0.5, 0],
+    [0, 0.5, 0]
   ];
   // Add the left cap.
   for (let step = 0; step < resolution; step++) {
@@ -22,12 +22,12 @@ export function roundCapJoinGeometry(regl: REGL.Regl, resolution: number) {
     instanceRoundRound.push([
       0.5 * Math.cos(theta0),
       0.5 * Math.sin(theta0),
-      0,
+      0
     ]);
     instanceRoundRound.push([
       0.5 * Math.cos(theta1),
       0.5 * Math.sin(theta1),
-      0,
+      0
     ]);
   }
   // Add the right cap.
@@ -38,17 +38,17 @@ export function roundCapJoinGeometry(regl: REGL.Regl, resolution: number) {
     instanceRoundRound.push([
       0.5 * Math.cos(theta0),
       0.5 * Math.sin(theta0),
-      1,
+      1
     ]);
     instanceRoundRound.push([
       0.5 * Math.cos(theta1),
       0.5 * Math.sin(theta1),
-      1,
+      1
     ]);
   }
   return {
     buffer: regl.buffer(instanceRoundRound),
-    count: instanceRoundRound.length,
+    count: instanceRoundRound.length
   };
 }
 
@@ -87,29 +87,29 @@ export function interleavedStripRoundCapJoin3DDEMO(
       precision highp float;
       varying vec3 vColor;
       void main() {
-        gl_FragColor = vec4(vColor, 1);
+        gl_FragColor = vec4(vColor, 1.);
       }`,
 
     cull: {
       enable: true,
-      face: "back",
+      face: "back"
     },
 
     attributes: {
       position: {
         buffer: roundCapJoin.buffer,
-        divisor: 0,
+        divisor: 0
       },
       pointA: {
         buffer: regl.prop("points"),
         divisor: 1,
-        offset: Float32Array.BYTES_PER_ELEMENT * 0,
+        offset: Float32Array.BYTES_PER_ELEMENT * 0
       },
       pointB: {
         buffer: regl.prop("points"),
         divisor: 1,
-        offset: Float32Array.BYTES_PER_ELEMENT * 3,
-      },
+        offset: Float32Array.BYTES_PER_ELEMENT * 3
+      }
       // colorA: {
       //   buffer: regl.prop("color"),
       //   divisor: 1,
@@ -127,11 +127,11 @@ export function interleavedStripRoundCapJoin3DDEMO(
       model: regl.prop("model"),
       view: viewMatrix,
       projection: projectionMatrix,
-      resolution: regl.prop("resolution"),
+      resolution: regl.prop("resolution")
     },
 
     count: roundCapJoin.count,
     instances: regl.prop("segments"),
-    viewport: regl.prop("viewport"),
+    viewport: regl.prop("viewport")
   });
 }

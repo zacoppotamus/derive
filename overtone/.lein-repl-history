@@ -1,0 +1,5 @@
+(println "Hello world!")
+(use 'overtone.live)
+(doc demo)
+(demo (sin-osc 440))
+(demo 1 (sin-osc 440))

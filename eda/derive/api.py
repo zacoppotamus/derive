@@ -88,7 +88,7 @@ class SimilarityID(Resource):
         )
 
         out = list(item for item in soundscape.metadata if item["id"] in I.flatten())
-        return json.dumps(out, cls=NumpyEncoder, indent=4)
+        return json.dumps(cls=NumpyEncoder, indent=4)
 
 
 class SimilarityVector(Resource):

@@ -1,0 +1,19 @@
+:root {
+  --black: black;
+  --white: white;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, sans-serif, "Helvetica Neue";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--black);
+  color: white;
+}
+
+#app__container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}

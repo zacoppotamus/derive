@@ -1,11 +1,13 @@
 import { mat4 } from "gl-matrix";
 
+export const modelMatrix = mat4.create();
+
 export const viewMatrix = ({ tick }: { tick: number }): mat4 => {
   const t = 0.01 * tick;
   return mat4.lookAt(
     ([] as unknown) as mat4,
     // [10 * Math.cos(t), 0, 80 + 10 * Math.sin(t)],
-    [10 * Math.cos(t), 0, 140],
+    [10 * Math.cos(t), 0, 300],
     // [10 * Math.cos(t), 0, 30 + 10 * Math.sin(t)],
     [0, 0, 0],
     [0, 1, 0]
